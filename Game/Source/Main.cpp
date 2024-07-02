@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
 	renderer.CreateWindow("Game Engine", 800, 600);
 
 	Input input;
+	input.Initialize();
 
 	Vector2 v1{ 400, 300 };
 	Vector2 v2{ 700, 500 };
