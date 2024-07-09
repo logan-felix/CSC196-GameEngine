@@ -9,6 +9,9 @@ void Particle::Update(float dt)
 
 void Particle::Draw(Renderer& renderer)
 {
-	renderer.SetColor(r, g, b, a);
-	if (lifespan >= 0) { renderer.DrawPoint(position.x, position.y); }
+	if (lifespan >= 0) 
+	{ 
+		renderer.SetColor(r, g, b, a); 
+		renderer.DrawRect(position.x, position.y, 4.0f, 4.0f);
+	}
 }
