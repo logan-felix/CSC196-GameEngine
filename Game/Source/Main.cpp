@@ -6,6 +6,7 @@
 #include "ETime.h"
 #include "MathUtil.h"
 #include <fmod.hpp>
+#include "Model.h"
 
 #include <SDL.h>
 #include <iostream>
@@ -66,6 +67,14 @@ int main(int argc, char* argv[])
 	sounds.push_back(sound);
 
 
+	std::vector<Vector2> points;
+	points.push_back(Vector2{ -5, 5 });
+	points.push_back(Vector2{ 0, -5 });
+	points.push_back(Vector2{ 5, 5 });
+	points.push_back(Vector2{ -5, 5 });
+	Model model{ points, Color{ 1, 1, 1, 0 } };
+	Vector2 position{ 400, 300 };
+	float rotation = 0;
 
 	bool quit = false;
 	while (!quit)
@@ -80,6 +89,16 @@ int main(int argc, char* argv[])
 		{
 			quit = true;
 		}
+
+		Vector2 velocity{ 0, 0 };
+		if (input.GetKeyDown(SDL_SCANCODE_UP)) velocity.y = -200;
+		if (input.GetKeyDown(SDL_SCANCODE_DOWN)) velocity.y = 200;
+		
+		if (input.GetKeyDown(SDL_SCANCODE_LEFT)) velocity.x = -200;
+		if (input.GetKeyDown(SDL_SCANCODE_RIGHT)) velocity.x = 200;
+
+		position = position + velocity * time.GetDeltaTime();
+		rotation = velocity.Angle(); //rotation + time.GetDeltaTime();
 
 		// UPDATE
 
@@ -145,7 +164,7 @@ int main(int argc, char* argv[])
 			float x = Math::Cos(Math::DegToRad(angle + offset)) * Math::Sin((offset + angle) * 0.01f) * radius;
 			float y = Math::Sin(Math::DegToRad(angle + offset)) * Math::Cos((offset + angle) * 0.01f) * radius;
 
-			renderer.DrawRect(400 + x, 300 + y, 4.0f, 4.0f);
+			//renderer.DrawRect(400 + x, 300 + y, 4.0f, 4.0f);
 		}
 
 		// draw particles
@@ -154,6 +173,9 @@ int main(int argc, char* argv[])
 		{
 			particle.Draw(renderer);
 		}
+
+		renderer.SetColor(255, 255, 255, 0);
+		model.Draw(renderer, position, rotation, 5);
 
 		// show screen
 		renderer.EndFrame();
