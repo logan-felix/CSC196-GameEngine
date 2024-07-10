@@ -5,9 +5,10 @@
 #include "Random.h"
 #include "ETime.h"
 #include "MathUtil.h"
-#include <fmod.hpp>
 #include "Model.h"
+#include "Transform.h"
 
+#include <fmod.hpp>
 #include <SDL.h>
 #include <iostream>
 #include <stdio.h>      /* printf, scanf, puts, NULL */
@@ -45,7 +46,7 @@ int main(int argc, char* argv[])
 	FMOD::Sound* sound = nullptr;
 	audio->createSound("test.wav", FMOD_DEFAULT, 0, &sound);
 
-	audio->playSound(sound, 0, false, nullptr);
+	//audio->playSound(sound, 0, false, nullptr);
 
 	std::vector<FMOD::Sound*> sounds;
 	audio->createSound("bass.wav", FMOD_DEFAULT, 0, &sound); // 0
@@ -66,16 +67,44 @@ int main(int argc, char* argv[])
 	audio->createSound("close-hat.wav", FMOD_DEFAULT, 0, &sound); // 5
 	sounds.push_back(sound);
 
-
+	// triangle points
 	std::vector<Vector2> points;
+	points.push_back(Vector2{ 5, 0 });
+	points.push_back(Vector2{ -5, -5 });
 	points.push_back(Vector2{ -5, 5 });
-	points.push_back(Vector2{ 0, -5 });
-	points.push_back(Vector2{ 5, 5 });
-	points.push_back(Vector2{ -5, 5 });
-	Model model{ points, Color{ 1, 1, 1, 0 } };
+	points.push_back(Vector2{ 5, 0 });
+	Model model{ points, Color{ 1, 0, 1 } };
+
+	Transform transform{ { renderer.GetWidth() >> 1, renderer.GetHeight() >> 1 }, 0, 5};
+
+	// 0001 = 1
+	// 0010 = 2
+	// 0100 = 4
+	// 1000 = 8
+	// 1000 >> 1 = 0100
+
 	Vector2 position{ 400, 300 };
 	float rotation = 0;
 
+	// asteroid points
+	std::vector<Vector2> asteroid;
+	asteroid.push_back(Vector2{ 0, -12 });
+	asteroid.push_back(Vector2{ 3, -9 });
+	asteroid.push_back(Vector2{ 9, -6 });
+	asteroid.push_back(Vector2{ 12, 3 });
+	asteroid.push_back(Vector2{ 9, 6 });
+	asteroid.push_back(Vector2{ 6, 12 });
+	asteroid.push_back(Vector2{ 3, 9 });
+	asteroid.push_back(Vector2{ -3, 12 });
+	asteroid.push_back(Vector2{ -9, 3 });
+	asteroid.push_back(Vector2{ -6, 0 });
+	asteroid.push_back(Vector2{ -9, -6 });
+	asteroid.push_back(Vector2{ -6, -9 });
+	asteroid.push_back(Vector2{ 0, -12 });
+	Model asteroidModel{ asteroid, Color{ 1, 1, 1 } };
+
+
+	// main loop
 	bool quit = false;
 	while (!quit)
 	{
@@ -90,15 +119,18 @@ int main(int argc, char* argv[])
 			quit = true;
 		}
 
-		Vector2 velocity{ 0, 0 };
-		if (input.GetKeyDown(SDL_SCANCODE_UP)) velocity.y = -200;
-		if (input.GetKeyDown(SDL_SCANCODE_DOWN)) velocity.y = 200;
+		float thrust = 0;
+		if (input.GetKeyDown(SDL_SCANCODE_UP)) thrust = 200;
+		if (input.GetKeyDown(SDL_SCANCODE_DOWN)) thrust = -200;
 		
-		if (input.GetKeyDown(SDL_SCANCODE_LEFT)) velocity.x = -200;
-		if (input.GetKeyDown(SDL_SCANCODE_RIGHT)) velocity.x = 200;
+		if (input.GetKeyDown(SDL_SCANCODE_LEFT)) transform.rotation -= Math::DegToRad(100) * time.GetDeltaTime();
+		if (input.GetKeyDown(SDL_SCANCODE_RIGHT)) transform.rotation += Math::DegToRad(100) * time.GetDeltaTime();
 
-		position = position + velocity * time.GetDeltaTime();
-		rotation = velocity.Angle(); //rotation + time.GetDeltaTime();
+		Vector2 velocity = Vector2{ thrust, 0.0f }.Rotate(transform.rotation);
+		transform.position += velocity * time.GetDeltaTime();
+		transform.position.x = Math::Wrap(transform.position.x, (float)renderer.GetWidth());
+		transform.position.y = Math::Wrap(transform.position.y, (float)renderer.GetHeight());
+		//rotation = velocity.Angle(); //rotation + time.GetDeltaTime();
 
 		// UPDATE
 
@@ -156,7 +188,9 @@ int main(int argc, char* argv[])
 		renderer.SetColor(0, 0, 0, 0);
 		renderer.BeginFrame();
 
-		renderer.SetColor(255, 255, 0, 0);
+		renderer.SetColor(255, 255, 255, 0);
+
+
 		float radius = 200;
 		offset += (90 * time.GetDeltaTime());
 		for (float angle = 0; angle < 360; angle += 360 / 120)
@@ -175,7 +209,8 @@ int main(int argc, char* argv[])
 		}
 
 		renderer.SetColor(255, 255, 255, 0);
-		model.Draw(renderer, position, rotation, 5);
+		//model.Draw(renderer, transform);
+		asteroidModel.Draw(renderer, transform);
 
 		// show screen
 		renderer.EndFrame();

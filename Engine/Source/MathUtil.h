@@ -60,4 +60,14 @@ namespace Math
 	{
 		return (value < min) ? min : (value > max) ? max : value;
 	}
+
+	inline int Wrap(int value, int max)
+	{
+		return value % max + (value < 0) ? max : 0;
+	}
+
+	inline float Wrap(float value, float max)
+	{
+		return std::fmodf(value, max) + ((value < 0) ? max : 0);
+	}
 }
