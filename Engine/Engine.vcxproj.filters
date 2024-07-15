@@ -27,8 +27,20 @@
     <ClCompile Include="Source\ETime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Model.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +72,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
