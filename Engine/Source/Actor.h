@@ -1,8 +1,10 @@
 #pragma once
 #include "Transform.h"
+#include <string>
 
 class Model;
 class Renderer;
+class Scene;
 
 class Actor
 {
@@ -18,8 +20,19 @@ public:
 	virtual void Draw(Renderer& renderer);
 
 	void SetDamping(float damping) { m_damping = damping; }
+	void SetLifespan(float lifespan) { m_lifespan = lifespan;  }
+
+	const Transform& GetTransform() { return m_transform; }
+
+	void SetTag(const std::string& tag) { m_tag = tag; }
+	const std::string& GetTag() { return m_tag; }
+
+	virtual void OnCollision(Actor* actor) = 0;
+
+	friend class Scene;
 
 protected:
+	std::string m_tag;
 	bool m_destroyed = false;
 	float m_lifespan = 0;
 
@@ -28,4 +41,5 @@ protected:
 	float m_damping{ 0 };
 
 	Model* m_model{ nullptr };
+	Scene* m_scene{ nullptr };
 };

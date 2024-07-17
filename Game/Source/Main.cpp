@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "Player.h"
 #include "Scene.h"
+#include "Enemy.h"
 
 #include <iostream>
 #include <stdio.h>      /* printf, scanf, puts, NULL */
@@ -38,21 +39,22 @@ int main(int argc, char* argv[])
 	points.push_back(Vector2{ 5, 0 });
 
 	// actor
-	Model* model = new Model{ points, Color{ 1, 0, 1 } };
-	Transform transform{ { g_engine.GetRenderer().GetWidth() >> 1, g_engine.GetRenderer().GetHeight() >> 1}, 0, 5};
-
-	Player* player = new Player(1, transform, model);
-	player->SetDamping(0.4);
-
-
+	Model* model = new Model{ points, Color{ 1, 1, 1 } };
 	Scene* scene = new Scene();
 
-	for (int i = 0; i < 100; i++) 
-	{
-		Transform transform{ Vector2{ randomf(0, 800), randomf(0, 600) }, 0, randomf(1, 5) };
-		Player* player = new Player(1, transform, model);
-		scene->AddActor(player);
-	}
+	Transform transform{ Vector2{ 400, 300 }, 0, 3 };
+	Player* player = new Player( randomf( 300, 400 ), transform, model);
+	player->SetDamping(2.0f);
+	player->SetTag("Player");
+	scene->AddActor(player);
+
+	auto* enemyModel = new Model{ points, Color{ 1, 1, 0 } };
+	auto* enemy = new Enemy(100, Transform{ { randomf(0, g_engine.GetRenderer().GetWidth()), randomf(0, g_engine.GetRenderer().GetHeight()) }, 0, 4 }, enemyModel);
+	enemy->SetDamping(1.0f);
+	enemy->SetTag("Enemy");
+	scene->AddActor(enemy);
+
+	float spawnTimer = 3000;
 
 	// 0001 = 1
 	// 0010 = 2
@@ -86,7 +88,7 @@ int main(int argc, char* argv[])
 	while (!quit)
 	{
 		time.Tick();
-		std::cout << time.GetTime() << std::endl;
+		//std::cout << time.GetTime() << std::endl;
 
 		// INPUT
 		g_engine.GetInput().Update();
@@ -96,6 +98,15 @@ int main(int argc, char* argv[])
 			quit = true;
 		}
 
+		spawnTimer -= 1;
+		if (spawnTimer <= 0)
+		{
+			auto* enemy = new Enemy(100, Transform{ { randomf(0, g_engine.GetRenderer().GetWidth()), randomf(0, g_engine.GetRenderer().GetHeight()) }, 0, 4 }, enemyModel);
+			enemy->SetDamping(1.0f);
+			enemy->SetTag("Enemy");
+			scene->AddActor(enemy);
+			spawnTimer = 3000;
+		}
 		
 		//rotation = velocity.Angle(); //rotation + time.GetDeltaTime();
 

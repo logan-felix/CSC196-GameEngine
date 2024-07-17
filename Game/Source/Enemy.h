@@ -1,15 +1,15 @@
 #pragma once
 #include "Actor.h"
 
-class Player : public Actor
+class Enemy : public Actor
 {
 public:
-	Player() = default;
-	Player(const Transform& transform) : Actor{ transform } {}
-	Player(const Transform& transform, Model* model) :
+	Enemy() = default;
+	Enemy(const Transform& transform) : Actor{ transform } {}
+	Enemy(const Transform& transform, Model* model) :
 		Actor{ transform, model }
 	{}
-	Player(float speed, const Transform& transform, Model* model) :
+	Enemy(float speed, const Transform& transform, Model* model) :
 		Actor{ transform, model },
 		m_speed{ speed }
 	{}
