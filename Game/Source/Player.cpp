@@ -2,6 +2,8 @@
 #include "Engine.h"
 #include "Bullet.h"
 #include "Scene.h"
+#include "GameData.h"
+
 #include <iostream>
 
 void Player::Update(float dt)
@@ -26,14 +28,8 @@ void Player::Update(float dt)
 	{
 		m_fireTimer = 0.2f;
 
-		std::vector<Vector2> points;
-		points.push_back(Vector2{ 5, 0 });
-		points.push_back(Vector2{ -5, -5 });
-		points.push_back(Vector2{ -5, 5 });
-		points.push_back(Vector2{ 5, 0 });
-
 		// actor
-		Model* model = new Model{ points, Color{ 1, 0, 0 } };
+		Model* model = new Model{ GameData::shipPoints, Color{ 1, 0, 0 } };
 		Transform transform{ m_transform.position, m_transform.rotation, 1.0f };
 
 		Bullet* bullet = new Bullet(400.0f, transform, model);

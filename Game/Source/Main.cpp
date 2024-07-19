@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "Scene.h"
 #include "Enemy.h"
+#include "GameData.h"
+#include "SpaceGame.h"
 
 #include <iostream>
 #include <stdio.h>      /* printf, scanf, puts, NULL */
@@ -13,9 +15,26 @@ int main(int argc, char* argv[])
 {
 	g_engine.Initialize();
 
+	SpaceGame* game = new SpaceGame(&g_engine);
+	game->Initialize();
 
-	// create systems
-	 
+	while (!g_engine.IsQuit())
+	{
+		g_engine.Update();
+		game->Update(g_engine.GetTime().GetDeltaTime());
+
+		g_engine.GetRenderer().SetColor(0, 0, 0, 0);
+		g_engine.GetRenderer().BeginFrame();
+
+		game->Draw(g_engine.GetRenderer());
+
+		g_engine.GetRenderer().EndFrame();
+	}
+
+	return 0;
+}
+
+/*
 	// add audio sounds
 	g_engine.GetAudio().AddSound("bass.wav");
 	g_engine.GetAudio().AddSound("snare.wav");
@@ -24,22 +43,11 @@ int main(int argc, char* argv[])
 	g_engine.GetAudio().AddSound("open-hat.wav");
 	g_engine.GetAudio().AddSound("close-hat.wav");
 
-	// create time system
-	Time time;
-
 	std::vector<Particle> particles;
-
 	float offset = 0;
 
-	// triangle points
-	std::vector<Vector2> points;
-	points.push_back(Vector2{ 5, 0 });
-	points.push_back(Vector2{ -5, -5 });
-	points.push_back(Vector2{ -5, 5 });
-	points.push_back(Vector2{ 5, 0 });
-
 	// actor
-	Model* model = new Model{ points, Color{ 1, 1, 1 } };
+	Model* model = new Model{ GameData::shipPoints, Color{ 1, 1, 1 } };
 	Scene* scene = new Scene();
 
 	Transform transform{ Vector2{ 400, 300 }, 0, 3 };
@@ -48,7 +56,7 @@ int main(int argc, char* argv[])
 	player->SetTag("Player");
 	scene->AddActor(player);
 
-	auto* enemyModel = new Model{ points, Color{ 1, 1, 0 } };
+	auto* enemyModel = new Model{ GameData::shipPoints, Color{ 1, 1, 0 } };
 	auto* enemy = new Enemy(100, Transform{ { randomf(0, g_engine.GetRenderer().GetWidth()), randomf(0, g_engine.GetRenderer().GetHeight()) }, 0, 4 }, enemyModel);
 	enemy->SetDamping(1.0f);
 	enemy->SetTag("Enemy");
@@ -84,20 +92,11 @@ int main(int argc, char* argv[])
 
 
 	// main loop
-	bool quit = false;
-	while (!quit)
+	while (!g_engine.IsQuit())
 	{
-		time.Tick();
-		//std::cout << time.GetTime() << std::endl;
+		g_engine.Update();
 
-		// INPUT
-		g_engine.GetInput().Update();
-
-		if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_ESCAPE))
-		{
-			quit = true;
-		}
-
+		// spawn timer
 		spawnTimer -= 1;
 		if (spawnTimer <= 0)
 		{
@@ -107,11 +106,9 @@ int main(int argc, char* argv[])
 			scene->AddActor(enemy);
 			spawnTimer = 3000;
 		}
-		
-		//rotation = velocity.Angle(); //rotation + time.GetDeltaTime();
 
 		// UPDATE
-		scene->Update(time.GetDeltaTime());
+		scene->Update(g_engine.GetTime().GetDeltaTime());
 
 		// update audio
 		g_engine.GetAudio().Update();
@@ -136,7 +133,7 @@ int main(int argc, char* argv[])
 
 		for (Particle& particle : particles)
 		{
-			particle.Update(time.GetDeltaTime());
+			particle.Update(g_engine.GetTime().GetDeltaTime());
 
 			if (particle.position.x > 800) particle.position.x = 0;
 			if (particle.position.x < 0) particle.position.x = 800;
@@ -153,7 +150,7 @@ int main(int argc, char* argv[])
 
 
 		float radius = 200;
-		offset += (90 * time.GetDeltaTime());
+		offset += (90 * g_engine.GetTime().GetDeltaTime());
 		for (float angle = 0; angle < 360; angle += 360 / 120)
 		{
 			float x = Math::Cos(Math::DegToRad(angle + offset)) * Math::Sin((offset + angle) * 0.01f) * radius;
@@ -180,3 +177,4 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+*/
