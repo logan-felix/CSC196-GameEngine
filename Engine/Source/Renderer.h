@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL_ttf.h>
 #include <SDL.h>
 #include <string>
 
@@ -31,4 +32,6 @@ private:
 
 	int m_width{ 0 };
 	int m_height{ 0 };
+
+	friend class Text;
 };

@@ -11,12 +11,21 @@ bool Renderer::Initialize()
 		return false;
 	}
 
+	// initialize TTF SDL
+	if (TTF_Init() < 0)
+	{
+		std::cerr << "Error initializing SDL TTF: " << SDL_GetError() << std::endl;
+		return false;
+	}
+
 	return true;
 }
 
 void Renderer::Shutdown()
 {
-
+	SDL_DestroyRenderer(m_renderer);
+	SDL_DestroyWindow(m_window);
+	TTF_Quit();
 }
 
 bool Renderer::CreateWindow(std::string title, int width, int height)

@@ -4,6 +4,8 @@
 #include "Enemy.h"
 #include "GameData.h"
 #include "SpaceGame.h"
+#include "Font.h"
+#include "Text.h"
 
 #include <iostream>
 #include <stdio.h>      /* printf, scanf, puts, NULL */
@@ -18,6 +20,12 @@ int main(int argc, char* argv[])
 	SpaceGame* game = new SpaceGame(&g_engine);
 	game->Initialize();
 
+	Font* font = new Font();
+	font->Load("arcadeclassic.ttf", 20);
+
+	Text* text = new Text(font);
+	text->Create(g_engine.GetRenderer(), "Hello World", Color{ 1, 1, 1, 1 });
+
 	while (!g_engine.IsQuit())
 	{
 		g_engine.Update();
@@ -27,6 +35,8 @@ int main(int argc, char* argv[])
 		g_engine.GetRenderer().BeginFrame();
 
 		game->Draw(g_engine.GetRenderer());
+
+		text->Draw(g_engine.GetRenderer(), 40, 40);
 
 		g_engine.GetRenderer().EndFrame();
 	}
