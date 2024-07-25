@@ -10,11 +10,12 @@
 #include "MathUtil.h"
 #include "Model.h"
 #include "Transform.h"
+#include "ParticleSystem.h"
 
 #include <fmod.hpp>
 #include <SDL.h>
 
-#define RENDERER g_engine.GetRenderer()
+//#define RENDERER g_engine.GetRenderer()
 
 class Engine
 {
@@ -30,6 +31,7 @@ public:
 	Renderer& GetRenderer() { return *m_renderer; }
 	Input& GetInput() { return *m_input; }
 	Audio& GetAudio() { return *m_audio; }
+	ParticleSystem& GetPS() { return *m_particleSystem; }
 
 	Time& GetTime() { return *m_time; }
 
@@ -38,13 +40,15 @@ public:
 private:
 	bool quit{ false };
 
-	Time* m_time{ nullptr };
+	std::shared_ptr<Time> m_time;
 
-	Renderer* m_renderer{ nullptr };
-	Input* m_input{ nullptr };
-	Audio* m_audio{ nullptr };
+	std::shared_ptr<Renderer> m_renderer;
+	std::shared_ptr<Input> m_input;
+	std::shared_ptr<Audio> m_audio;
 
-	static Engine ms_engine;
+	std::unique_ptr<ParticleSystem> m_particleSystem;
+
+	//static Engine ms_engine;
 };
 
 extern Engine g_engine;

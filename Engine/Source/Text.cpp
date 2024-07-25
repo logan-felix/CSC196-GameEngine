@@ -1,5 +1,5 @@
 #include "Text.h"
-#include <assert.h>
+#include <cassert>
 
 Text::~Text()
 {

@@ -147,6 +147,7 @@
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\GameData.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Pickup.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\SpaceGame.cpp" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="Source\Bullet.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\GameData.h" />
+    <ClInclude Include="Source\Pickup.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\SpaceGame.h" />
   </ItemGroup>
