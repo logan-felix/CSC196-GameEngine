@@ -30,7 +30,8 @@ public:
 
 	Renderer& GetRenderer() { return *m_renderer; }
 	Input& GetInput() { return *m_input; }
-	Audio& GetAudio() { return *m_audio; }
+	Audio& GetAudioBG() { return *m_audioBg; }
+	Audio& GetAudioSFX() { return *m_audioSfx; }
 	ParticleSystem& GetPS() { return *m_particleSystem; }
 
 	Time& GetTime() { return *m_time; }
@@ -44,7 +45,8 @@ private:
 
 	std::shared_ptr<Renderer> m_renderer;
 	std::shared_ptr<Input> m_input;
-	std::shared_ptr<Audio> m_audio;
+	std::shared_ptr<Audio> m_audioBg;
+	std::shared_ptr<Audio> m_audioSfx;
 
 	std::unique_ptr<ParticleSystem> m_particleSystem;
 

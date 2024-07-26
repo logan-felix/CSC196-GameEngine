@@ -27,14 +27,17 @@ void Player::Update(float dt)
 	m_transform.position.y = Math::Wrap(m_transform.position.y, (float)g_engine.GetRenderer().GetHeight());
 
 	// fire
+	m_fireModTimer -= dt;
+	if (m_fireModTimer <= 0) m_fireModifier = 1;
+
 	m_fireTimer -= dt;
-	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_SPACE) && m_fireTimer <= 0)//!g_engine.GetInput().GetKeyDown(SDL_SCANCODE_SPACE))
+	if (g_engine.GetInput().GetMouseButtonDown(0) && m_fireTimer <= 0) //!g_engine.GetInput().GetKeyDown(SDL_SCANCODE_SPACE))
 	{
-		m_fireTimer = 0.2f * m_fireModifier;
+		g_engine.GetAudioSFX().PlaySound("shoot.mp3");
+		m_fireTimer = 0.5f * m_fireModifier;
 
 		Vector2 direction = g_engine.GetInput().GetMousePosition() - m_transform.position;
 		float angle = direction.Angle();
-
 
 		// actor
 		Model* model = new Model{ GameData::shipPoints, Color{ 1, 0, 0 } };
@@ -45,36 +48,21 @@ void Player::Update(float dt)
 		bullet->SetTag("PlayerBullet");
 		m_scene->AddActor(std::move(bullet));
 	}
-
-	// fire everywhere
-	m_fireTimer -= dt;
-	if (g_engine.GetInput().GetKeyDown(SDL_SCANCODE_E) && m_fireTimer <= 0)//!g_engine.GetInput().GetKeyDown(SDL_SCANCODE_SPACE))
-	{
-		m_fireTimer = 0.2f * m_fireModifier;
-
-		Vector2 direction = g_engine.GetInput().GetMousePosition() - m_transform.position;
-		float angle = direction.Angle();
-
-
-		// actor
-		Model* model = new Model{ GameData::shipPoints, Color{ 1, 0, 0 } };
-		Transform transform{ m_transform.position, angle, 1.0f };
-
-		auto bullet = std::make_unique<Bullet>(400.0f, transform, model);
-		bullet->SetLifespan(1);
-		bullet->SetTag("PlayerBullet");
-		m_scene->AddActor(std::move(bullet));
-	}
-
 
 	Actor::Update(dt);
 }
 
 void Player::OnCollision(Actor* actor)
 {
-	if (actor->GetTag() == "Enemy")
+	if (!isShielded) 
 	{
-		m_destroyed = true;
-		dynamic_cast<SpaceGame*>(m_scene->GetGame())->OnPlayerDeath();
+		if (actor->GetTag() == "Asteroid")
+		{
+			m_destroyed = true;
+			dynamic_cast<SpaceGame*>(m_scene->GetGame())->OnPlayerDeath();
+		}
+	}
+	else {
+		isShielded = false;
 	}
 }

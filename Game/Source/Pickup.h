@@ -13,5 +13,5 @@ public:
 	void OnCollision(Actor* actor) override;
 
 protected:
-
+	float m_fireModTimer = 0;
 };

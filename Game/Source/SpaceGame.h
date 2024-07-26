@@ -35,6 +35,8 @@ private:
 	float m_spawnTimer{ 0 };
 	float m_spawnTime{ 0 };
 	float m_stateTimer{ 0 };
+	float m_pickupTimer{ 0 };
+	float m_shieldTimer{ 0 };
 
 	Font* m_font{ nullptr };
 	Font* m_fontLarge{ nullptr };
@@ -42,4 +44,6 @@ private:
 	Text* m_textLives{ nullptr };
 
 	Text* m_textTitle{ nullptr };
+
+	Text* m_textPickup{ nullptr };
 };

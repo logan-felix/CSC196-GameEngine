@@ -18,9 +18,15 @@ public:
 	virtual void OnCollision(Actor* actor);
 
 	void SetFireModifier(float modifier) { m_fireModifier = modifier; }
+	void SetFireModTimer(float modTime) { m_fireModTimer = modTime; }
+
+	void SetShield(bool shielded) { isShielded = shielded; }
+	bool GetShielded() { return isShielded; }
 
 private:
 	float m_speed = 0;
 	float m_fireTimer = 0;
 	float m_fireModifier = 1;
+	float m_fireModTimer = 0;
+	bool isShielded = false;
 };

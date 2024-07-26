@@ -7,12 +7,14 @@ bool Engine::Initialize()
 {
     m_renderer = std::make_unique<Renderer>();
     m_input = std::make_unique<Input>();
-    m_audio = std::make_unique<Audio>();
+    m_audioBg = std::make_unique<Audio>();
+    m_audioSfx = std::make_unique<Audio>();
 
     m_renderer->Initialize();
     m_renderer->CreateWindow("Game Engine", 800, 600);
     m_input->Initialize();
-    m_audio->Initialize();
+    m_audioBg->Initialize();
+    m_audioSfx->Initialize();
 
     m_time = std::make_unique<Time>();
 
@@ -25,7 +27,8 @@ void Engine::Shutdown()
 {
     m_renderer->Shutdown();
     m_input->Shutdown();
-    m_audio->Shutdown();
+    m_audioBg->Shutdown();
+    m_audioSfx->Shutdown();
 }
 
 void Engine::Update()
@@ -46,6 +49,7 @@ void Engine::Update()
     m_time->Tick();
 
     m_input->Update();
-    m_audio->Update();
+    m_audioBg->Update();
+    m_audioSfx->Update();
     m_particleSystem->Update(m_time->GetDeltaTime());
 }

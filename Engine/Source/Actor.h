@@ -30,6 +30,8 @@ public:
 	virtual void OnCollision(Actor* actor) = 0;
 	float GetRadius() { return (m_model) ? m_model->GetRadius() * m_transform.scale : 0; };
 
+	Model GetModel() { return *m_model; }
+
 	friend class Scene;
 
 protected:

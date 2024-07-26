@@ -23,8 +23,14 @@ int main(int argc, char* argv[])
 	Font* font = new Font();
 	font->Load("arcadeclassic.ttf", 20);
 
-	Text* text = new Text(font);
-	text->Create(g_engine.GetRenderer(), "Hello World", Color{ 1, 1, 1, 1 });
+	g_engine.GetAudioBG().AddSound("stardust.mp3");
+	g_engine.GetAudioSFX().AddSound("game_over.wav");
+	g_engine.GetAudioSFX().AddSound("power_up.wav");
+	g_engine.GetAudioSFX().AddSound("shoot.mp3");
+	g_engine.GetAudioSFX().AddSound("game_start.mp3");
+
+	//Text* text = new Text(font);
+	//text->Create(g_engine.GetRenderer(), "Hello World", Color{ 1, 1, 1, 1 });
 
 	while (!g_engine.IsQuit())
 	{
@@ -36,7 +42,7 @@ int main(int argc, char* argv[])
 
 		game->Draw(g_engine.GetRenderer());
 		g_engine.GetPS().Draw(g_engine.GetRenderer());
-		text->Draw(g_engine.GetRenderer(), 40, 40);
+		//text->Draw(g_engine.GetRenderer(), 40, 40);
 
 		g_engine.GetRenderer().EndFrame();
 	}

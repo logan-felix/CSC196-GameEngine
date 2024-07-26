@@ -25,6 +25,6 @@ void Particle::Draw(Renderer& renderer)
 	if (lifespan >= 0) 
 	{ 
 		renderer.SetColor(r, g, b, a); 
-		renderer.DrawRect(position.x, position.y, 4.0f, 4.0f);
+		renderer.DrawRect(position.x, position.y, 2.0f, 2.0f);
 	}
 }

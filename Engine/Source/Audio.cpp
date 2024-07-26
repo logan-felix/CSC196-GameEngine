@@ -44,6 +44,24 @@ bool Audio::PlaySound(const std::string& name)
 		if (!AddSound(name)) return false;
 	}
 
-	m_audio->playSound(m_sounds[name], 0, false, nullptr);
+	m_audio->playSound(m_sounds[name], 0, false, &m_channel);
 	return true;
+}
+
+void Audio::StopSound()
+{
+	if (m_channel)
+	{
+		m_channel->stop();
+	}
+}
+
+bool Audio::isSoundPlaying()
+{
+	bool isPlaying = false;
+	if (m_channel)
+	{
+		m_channel->isPlaying(&isPlaying);
+	}
+	return isPlaying;
 }

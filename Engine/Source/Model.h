@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include "Text.h"
 #include "Transform.h"
 #include "Color.h"
 #include "Renderer.h"
@@ -17,9 +18,13 @@ public:
 	void Draw(Renderer& renderer, const Vector2& position, float angle, float scale);
 	void Draw(Renderer& renderer, Transform transform);
 
+	void SetColor(const Color& color) { m_color = color; }
+	Color GetColor() { return m_color; }
+
 	float GetRadius();
 
 private:
 	std::vector<Vector2> m_points;
+	Text m_text;
 	Color m_color;
 };
